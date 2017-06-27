@@ -1,0 +1,152 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.itshareplus.googlemapdemo.MapsActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_grey"
+    android:orientation="vertical">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/tvDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 km"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginBottom="12dp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            map:layout_constraintVertical_bias="1.0"
+            android:layout_marginStart="11dp"
+            map:layout_constraintLeft_toRightOf="@+id/imageView"
+            android:layout_marginLeft="11dp" />
+
+        <TextView
+            android:textColor="@color/white"
+            android:id="@+id/tvDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 min"
+            android:textSize="20sp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="12dp"
+            map:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            map:layout_constraintVertical_bias="1.0"
+            map:layout_constraintLeft_toRightOf="@+id/imageView2"
+            android:layout_marginLeft="9dp"
+            android:layout_marginStart="9dp" />
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="5dp"
+            android:src="@mipmap/clock_icon"
+
+            map:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            map:layout_constraintLeft_toLeftOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/distance_icon"
+            android:layout_marginStart="9dp"
+            map:layout_constraintLeft_toRightOf="@+id/tvDuration"
+            android:layout_marginLeft="9dp"
+            map:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="343dp"
+            android:layout_height="455dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            map:layout_constraintHorizontal_bias="0.0"
+            map:layout_constraintLeft_toLeftOf="parent"
+            map:layout_constraintRight_toRightOf="parent"
+            map:layout_constraintTop_toTopOf="parent" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="58dp">
+
+        <ImageButton
+            android:id="@+id/gas_button"
+            android:layout_width="62dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="40dp"
+            android:onClick="find_gas"
+            android:src="@mipmap/gas_station"
+            map:layout_constraintLeft_toLeftOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp" />
+        <ImageButton
+            android:id="@+id/truck_center"
+            android:layout_width="62dp"
+            android:layout_height="48dp"
+            android:onClick="center_truck"
+            android:src="@mipmap/truck_center_icon"
+            map:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            map:layout_constraintRight_toLeftOf="@+id/driver_info"
+            android:layout_marginRight="8dp"
+            map:layout_constraintLeft_toRightOf="@+id/gas_button"
+            android:layout_marginLeft="8dp" />
+
+        <ImageButton
+            android:id="@+id/driver_info"
+            android:layout_width="62dp"
+            android:layout_height="48dp"
+            android:onClick="driver_info"
+            android:src="@mipmap/driver_icon"
+            map:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="40dp"
+            map:layout_constraintRight_toRightOf="parent" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

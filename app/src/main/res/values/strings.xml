@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">GoogleMapDemo</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="Truck_main_label">Trucks</string>
+    <string name="add_trucks">Add</string>
+    <string name="truck_source">Origin</string>
+    <string name="enter_text">Enter text</string>
+    <string name="truck_destination">Destination</string>
+    <string name="submit_truck">Submit</string>
+    <string name="gas_station">Gas</string>
+    <string name="truck_name_label">Truck Name</string>
+    <string name="driver_name_label">Driver Name</string>
+    <string name="driver_number_label">Contact</string>
+    <string name="name_driver_lablel">Name</string>
+</resources>
