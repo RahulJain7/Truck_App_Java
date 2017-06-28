@@ -41,6 +41,8 @@ import Modules.Trucks;
 
 public class new_truck extends Activity{
     private int truck_number;
+    private EditText source;
+    private EditText dest;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +53,8 @@ public class new_truck extends Activity{
     }
 
     public void Clicked(View view) {
-        EditText source = (EditText)findViewById(R.id.source_input);
-        EditText dest = (EditText)findViewById(R.id.dest_input);
+        source = (EditText)findViewById(R.id.source_input);
+        dest = (EditText)findViewById(R.id.dest_input);
         EditText name = (EditText)findViewById(R.id.name_input);
         EditText driver_name = (EditText)findViewById(R.id.driver_name_input);
         EditText driver_number = (EditText)findViewById(R.id.phone_input);
@@ -88,11 +90,17 @@ public class new_truck extends Activity{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("truck", Boolean.TRUE);
-            resultIntent.putExtra("truck_no",truck_number);
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            if(data.getExtras().getBoolean("check")){
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("truck", Boolean.TRUE);
+                resultIntent.putExtra("truck_no",truck_number);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            }
+            else{
+                source.setText("");
+                dest.setText("");
+            }
         }
     }
 

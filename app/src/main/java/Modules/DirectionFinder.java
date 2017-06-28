@@ -93,54 +93,61 @@ public class DirectionFinder {
         List<Step> routes = new ArrayList<Step>();
         JSONObject jsonData = new JSONObject(data);
         Route route = new Route();
-        JSONArray jsonRoutes = jsonData.getJSONArray("routes");
-        for (int i = 0; i < jsonRoutes.length(); i++) {
+        Log.i("check-status",jsonData.getString("status"));
 
-            JSONObject jsonRoute = jsonRoutes.getJSONObject(i);
-            JSONObject bounds_map = jsonRoute.getJSONObject("bounds");
-            JSONObject southwest = bounds_map.getJSONObject("southwest");
-            JSONObject northeast = bounds_map.getJSONObject("northeast");
+        if (!jsonData.getString("status").toString().equals("OK")){
+            Log.i("input_error","yes");
+            route.error = Boolean.TRUE;
+        }
+        else {
+            Log.i("input_error","no");
+            route.error = Boolean.FALSE;
+            JSONArray jsonRoutes = jsonData.getJSONArray("routes");
+            for (int i = 0; i < jsonRoutes.length(); i++) {
 
-            LatLng southwest_l = new LatLng(southwest.getDouble("lat"),southwest.getDouble("lng"));
-            LatLng northeast_l = new LatLng(northeast.getDouble("lat"),northeast.getDouble("lng"));
-            route.bounds = new LatLngBounds(southwest_l,northeast_l);
-            JSONObject overview_polylineJson = jsonRoute.getJSONObject("overview_polyline");
-            JSONArray jsonLegs = jsonRoute.getJSONArray("legs");
-            JSONObject jsonLeg = jsonLegs.getJSONObject(0);
-            JSONArray jsonSteps = jsonLeg.getJSONArray("steps");
-            route.start_address = jsonLeg.getString("start_address");
-            route.end_address = jsonLeg.getString("end_address");
-            JSONObject start = jsonLeg.getJSONObject("start_location");
-            JSONObject end = jsonLeg.getJSONObject("end_location");
-            route.start_location = new LatLng(start.getDouble("lat"), start.getDouble("lng"));
-            route.end_location = new LatLng(end.getDouble("lat"),end.getDouble("lng"));
-            JSONObject jsonDistance = jsonLeg.getJSONObject("distance");
-            JSONObject jsonDuration = jsonLeg.getJSONObject("duration");
-            route.di = new Distance(jsonDistance.getString("text"),jsonDistance.getInt("value"));
-            route.du = new Duration(jsonDuration.getString("text"),jsonDuration.getInt("value"));
-            for (int j=0; j< jsonSteps.length(); j++) {
-                Step step = new Step();
+                JSONObject jsonRoute = jsonRoutes.getJSONObject(i);
+                JSONObject bounds_map = jsonRoute.getJSONObject("bounds");
+                JSONObject southwest = bounds_map.getJSONObject("southwest");
+                JSONObject northeast = bounds_map.getJSONObject("northeast");
 
-                JSONObject jsonStep = jsonSteps.getJSONObject(j);
+                LatLng southwest_l = new LatLng(southwest.getDouble("lat"), southwest.getDouble("lng"));
+                LatLng northeast_l = new LatLng(northeast.getDouble("lat"), northeast.getDouble("lng"));
+                route.bounds = new LatLngBounds(southwest_l, northeast_l);
+                JSONObject overview_polylineJson = jsonRoute.getJSONObject("overview_polyline");
+                JSONArray jsonLegs = jsonRoute.getJSONArray("legs");
+                JSONObject jsonLeg = jsonLegs.getJSONObject(0);
+                JSONArray jsonSteps = jsonLeg.getJSONArray("steps");
+                route.start_address = jsonLeg.getString("start_address");
+                route.end_address = jsonLeg.getString("end_address");
+                JSONObject start = jsonLeg.getJSONObject("start_location");
+                JSONObject end = jsonLeg.getJSONObject("end_location");
+                route.start_location = new LatLng(start.getDouble("lat"), start.getDouble("lng"));
+                route.end_location = new LatLng(end.getDouble("lat"), end.getDouble("lng"));
+                JSONObject jsonDistance = jsonLeg.getJSONObject("distance");
+                JSONObject jsonDuration = jsonLeg.getJSONObject("duration");
+                route.di = new Distance(jsonDistance.getString("text"), jsonDistance.getInt("value"));
+                route.du = new Duration(jsonDuration.getString("text"), jsonDuration.getInt("value"));
+                for (int j = 0; j < jsonSteps.length(); j++) {
+                    Step step = new Step();
 
-                JSONObject jsonEndLocation = jsonStep.getJSONObject("end_location");
-                JSONObject jsonStartLocation = jsonStep.getJSONObject("start_location");
-                JSONObject polyline = jsonStep.getJSONObject("polyline");
+                    JSONObject jsonStep = jsonSteps.getJSONObject(j);
 
+                    JSONObject jsonEndLocation = jsonStep.getJSONObject("end_location");
+                    JSONObject jsonStartLocation = jsonStep.getJSONObject("start_location");
+                    JSONObject polyline = jsonStep.getJSONObject("polyline");
 
-
-                step.startLocation = new LatLng(jsonStartLocation.getDouble("lat"), jsonStartLocation.getDouble("lng"));
-                step.endLocation = new LatLng(jsonEndLocation.getDouble("lat"), jsonEndLocation.getDouble("lng"));
-                step.points = decodePolyLine(polyline.getString("points"));
-                if(jsonStep.getString("html_instructions").toLowerCase().contains("Toll".toLowerCase())){
-                    step.Toll = Boolean.TRUE;
+                    step.startLocation = new LatLng(jsonStartLocation.getDouble("lat"), jsonStartLocation.getDouble("lng"));
+                    step.endLocation = new LatLng(jsonEndLocation.getDouble("lat"), jsonEndLocation.getDouble("lng"));
+                    step.points = decodePolyLine(polyline.getString("points"));
+                    if (jsonStep.getString("html_instructions").toLowerCase().contains("Toll".toLowerCase())) {
+                        step.Toll = Boolean.TRUE;
+                    } else {
+                        step.Toll = Boolean.FALSE;
+                    }
+                    routes.add(step);
                 }
-                else {
-                    step.Toll = Boolean.FALSE;
-                }
-                routes.add(step);
+
             }
-
         }
 
         listener.onDirectionFinderSuccess(routes,route);

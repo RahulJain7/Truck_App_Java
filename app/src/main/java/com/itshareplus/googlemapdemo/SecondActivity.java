@@ -142,35 +142,46 @@ public class SecondActivity extends FragmentActivity implements OnMapReadyCallba
     public void onDirectionFinderSuccess(List<Step> routes, Route route) {
         progressDialog.dismiss();
 
-        polylinePaths = new ArrayList<>();
-        originMarkers = new ArrayList<>();
-        destinationMarkers = new ArrayList<>();
-        mMap.addMarker(new MarkerOptions()
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.truck))
-                .title(route.start_address)
-                .position(route.start_location));
-        truck_position = route.start_location;
-        mMap.addMarker(new MarkerOptions()
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
-                .title(route.end_address)
-                .position(route.end_location));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(route.bounds,0));
-        ((TextView) findViewById(R.id.tvDuration)).setText(route.du.text);
-        ((TextView) findViewById(R.id.tvDistance)).setText(route.di.text);
-        for (Step step : routes) {
-            PolylineOptions polylineOptions = new PolylineOptions().
-                    geodesic(true).
-                    color(Color.BLUE).
-                    width(10);
+        if(route.error){
+            Toast.makeText(this, "Please enter valid address", Toast.LENGTH_SHORT).show();
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("check",Boolean.FALSE);
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        }
+        else{
 
-            if (step.Toll){
-                polylineOptions.color(Color.RED);
-            }
 
-            for (int i = 0; i < step.points.size(); i++)
-                polylineOptions.add(step.points.get(i));
+            polylinePaths = new ArrayList<>();
+            originMarkers = new ArrayList<>();
+            destinationMarkers = new ArrayList<>();
+            mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.truck))
+                    .title(route.start_address)
+                    .position(route.start_location));
+            truck_position = route.start_location;
+            mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
+                    .title(route.end_address)
+                    .position(route.end_location));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(route.bounds,0));
+            ((TextView) findViewById(R.id.tvDuration)).setText(route.du.text);
+            ((TextView) findViewById(R.id.tvDistance)).setText(route.di.text);
+            for (Step step : routes) {
+                PolylineOptions polylineOptions = new PolylineOptions().
+                        geodesic(true).
+                        color(Color.BLUE).
+                        width(10);
 
-            polylinePaths.add(mMap.addPolyline(polylineOptions));
+                if (step.Toll) {
+                    polylineOptions.color(Color.RED);
+                }
+
+                for (int i = 0; i < step.points.size(); i++)
+                    polylineOptions.add(step.points.get(i));
+
+                polylinePaths.add(mMap.addPolyline(polylineOptions));
+         }
         }
     }
 
@@ -221,6 +232,7 @@ public class SecondActivity extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent();
+        resultIntent.putExtra("check",Boolean.TRUE);
         setResult(RESULT_OK, resultIntent);
         finish();
     }
@@ -234,6 +246,7 @@ public class SecondActivity extends FragmentActivity implements OnMapReadyCallba
     public void driver_info(View view) {
         Intent driver = new Intent(this, driver_info.class);
         driver.putExtra("truck_no",truck_number);
+
         startActivity(driver);
     }
 }

@@ -13,4 +13,5 @@ public class Route {
     public Distance di;
     public Duration du;
     public LatLngBounds bounds;
+    public boolean error;
 }

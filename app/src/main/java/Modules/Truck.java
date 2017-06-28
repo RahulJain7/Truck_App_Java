@@ -11,7 +11,6 @@ public class Truck {
     public Truck(String Name){
         this.Name = Name;
     }
-
     public String driver_name;
     public String driver_number;
 
